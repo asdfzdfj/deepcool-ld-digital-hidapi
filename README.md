@@ -4,9 +4,17 @@ using [HIDAPI](https://github.com/libusb/hidapi)
 
 should works on Linux, FreeBSD and other places where hidapi is supported
 
+> [!NOTE]
+> the current state of this repo is intended to be more of a reference
+> implementation for using the cooler display outside Windows, and not suitable
+> for use as-is
+> (unless you somehow have a FreeBSD machine with amdtemp(4) compatible CPU and
+> the LD series cooler attached to it, that is)  
+> also, there's no plan to package this into a ready to use service currently
+
 ## requirements
 
-python3, [`hidapi`](https://pypi.org/project/hidapi/) pytohn bindings, and
+python3, [`hidapi`](https://pypi.org/project/hidapi/) python bindings, and
 system's hidapi library
 
 additionally, [`psutil`](https://pypi.org/project/psutil/) for conveniences in
@@ -29,9 +37,11 @@ to generate a report packet from supplied values, then write them to the
 device using hidapi `device.write()` command
 
 supported values:
-- power (uint, should be watts)
+- power (uint16, should be watts)
 - temperature (float32, in degC, or degF with `use_fahrenheit=True`)
-- usage (uint, cpu percent)
+    - despite it taking float32 shaped value, it doesn't seems handle/display
+      negative temps properly, probably needs more investigation
+- usage (uint8, cpu percent, should be between 0-100)
 
 ## example
 
